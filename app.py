@@ -78,8 +78,8 @@ def setup():
             """
         CREATE TABLE IF NOT EXISTS admins(
             id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(100) UNIQUE,
-            password VARCHAR(255)
+            email VARCHAR(100) NOT NULL UNIQUE,
+            password VARCHAR(60)
         )"""
         )
 
@@ -87,9 +87,9 @@ def setup():
             """
         CREATE TABLE IF NOT EXISTS students(
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(100),
-            email VARCHAR(100) UNIQUE,
-            password VARCHAR(255),
+            name VARCHAR(100) NOT NULL,
+            email VARCHAR(100) NOT NULL UNIQUE,
+            password VARCHAR(60),
             reg_code VARCHAR(10),
             is_active INT DEFAULT 0
         )"""
