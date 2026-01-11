@@ -9,8 +9,8 @@ from flask_login import (
     login_user,
     logout_user,
 )
+from flask_bcrypt import Bcrypt
 import mysql.connector
-import bcrypt
 import random
 import string
 from datetime import date, timedelta
@@ -21,6 +21,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
+bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "index"
 
@@ -123,7 +124,7 @@ def setup():
         # Create default admin if not exists
         cur.execute("SELECT * FROM admins WHERE email='admin@library.com'")
         if not cur.fetchone():
-            pwd = bcrypt.hashpw("admin123".encode(), bcrypt.gensalt())
+            pwd = bcrypt.generate_password_hash("library@123").decode()
             cur.execute(
                 "INSERT INTO admins (email,password) VALUES (%s,%s)",
                 ("admin@library.com", pwd),
@@ -182,19 +183,12 @@ def admin_login():
         db = connect()
         cur = db.cursor(dictionary=True)
         cur.execute("SELECT id, password FROM admins WHERE email=%s", (email,))
-        row = cur.fetchone()
+        admin = cur.fetchone()
         cur.close()
         db.close()
-
-        if row and bcrypt.checkpw(
-            pwd.encode(),
-            (
-                row["password"].encode()
-                if isinstance(row["password"], str)
-                else row["password"]
-            ),
-        ):
-            login_user(User(row["id"], "admin"))
+        
+        if admin and bcrypt.check_password_hash(admin["password"], pwd):
+            login_user(User(admin["id"], "admin"))
             return redirect(url_for("admin_dashboard"))
         else:
             flash("Invalid admin login", "error")
@@ -399,7 +393,7 @@ def issue_book():
         bid = request.form["book_id"]
 
         db = connect()
-        cur = db.cursor()
+        cur = db.cursor(dictionary=True)
         cur.execute("SELECT quantity FROM books WHERE id=%s", (bid,))
         book = cur.fetchone()
 
@@ -478,7 +472,8 @@ def activate_student():
     if request.method == "POST":
         email = request.form["email"]
         code = request.form["code"]
-        pwd = bcrypt.hashpw(request.form["password"].encode(), bcrypt.gensalt())
+        password = request.form["password"]
+        pwd = bcrypt.generate_password_hash(password).decode()
 
         db = connect()
         cur = db.cursor(dictionary=True)
@@ -511,15 +506,12 @@ def student_login():
         cur.execute(
             "SELECT id, password FROM students WHERE email=%s AND is_active=1", (email,)
         )
-        r = cur.fetchone()
+        student = cur.fetchone()
         cur.close()
         db.close()
-
-        if r and bcrypt.checkpw(
-            pwd.encode(),
-            r["password"].encode() if isinstance(r["password"], str) else r["password"],
-        ):
-            login_user(User(r["id"], "student"))
+        
+        if student and bcrypt.check_password_hash(student["password"], pwd):
+            login_user(User(student["id"], "student"))
             return redirect(url_for("student_dashboard"))
         else:
             flash("Invalid login", "error")
