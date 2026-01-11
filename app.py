@@ -65,21 +65,15 @@ def connect():
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT")),
     )
 
 
 def setup():
     try:
-        # db = mysql.connector.connect(
-        #     host=os.getenv("DB_HOST"),
-        #     user=os.getenv("DB_USER"),
-        #     password=os.getenv("DB_PASSWORD"),
-        # )
         db = connect()
         cur = db.cursor(dictionary=True)
-        # cur.execute("CREATE DATABASE IF NOT EXISTS lms_db")
-        # cur.execute("USE lms_db")
-
+        
         cur.execute(
             """
         CREATE TABLE IF NOT EXISTS admins(
