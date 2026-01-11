@@ -1,6 +1,6 @@
 flask
 flask-login
 mysql-connector-python
-bcrypt
+flask_bcrypt
 python-dotenv
 gunicorn
