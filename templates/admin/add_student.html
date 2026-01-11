@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Add Student{% endblock %}
+{% block content %}
+<h1 class="mb-3">Add Student</h1>
+<div class="row">
+  <div class="col-md-6 col-lg-5 mx-auto">
+    <form method="POST" class="mt-2">
+        <div class="mb-3">
+            <label class="form-label">Student ID</label>
+            <input type="number" name="student_id" class="form-control" placeholder="Student ID" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Name" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Add Student</button>
+    </form>
+  </div>
+ </div>
+{% endblock %}

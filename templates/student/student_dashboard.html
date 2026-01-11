@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<h1>Student Dashboard</h1>
+<ul style="list-style: none; margin-top: 20px;">
+    <li><a href="{{ url_for('my_books') }}" style="color: #007bff; margin: 10px 0; display: block;">View My Issued Books</a></li>
+    <li><a href="{{ url_for('search_book') }}" style="color: #007bff; margin: 10px 0; display: block;">View & Search Books</a></li>
+</ul>
+{% endblock %}

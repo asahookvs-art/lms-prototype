@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Library Management System</h1>
+<p>Welcome to the Library Management System</p>
+<ul style="margin-top: 20px; list-style: none;">
+    <li><a href="{{ url_for('admin_login') }}" style="color: #007bff;">Admin Login</a></li>
+    <li><a href="{{ url_for('student_login') }}" style="color: #007bff;">Student Login</a></li>
+    <li><a href="{{ url_for('activate_student') }}" style="color: #007bff;">Activate Student Account</a></li>
+</ul>
+{% endblock %}

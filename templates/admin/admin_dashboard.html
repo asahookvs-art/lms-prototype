@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<h2>Management Options</h2>
+<ul style="list-style: none; margin-top: 20px;">
+    <li><a href="{{ url_for('view_students') }}" style="color: #007bff; margin: 10px 0; display: block;">Student Management</a></li>
+    <li><a href="{{ url_for('view_books') }}" style="color: #007bff; margin: 10px 0; display: block;">Book Management</a></li>
+    <li><a href="{{ url_for('issue_book') }}" style="color: #007bff; margin: 10px 0; display: block;">Issue Book</a></li>
+    <li><a href="{{ url_for('return_book') }}" style="color: #007bff; margin: 10px 0; display: block;">Return Book</a></li>
+    <li><a href="{{ url_for('view_issued') }}" style="color: #007bff; margin: 10px 0; display: block;">View All Issued Books</a></li>
+</ul>
+{% endblock %}
