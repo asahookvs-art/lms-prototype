@@ -74,7 +74,7 @@ def setup():
     try:
         db = connect()
         cur = db.cursor(dictionary=True)
-        
+
         cur.execute(
             """
         CREATE TABLE IF NOT EXISTS admins(
@@ -186,7 +186,7 @@ def admin_login():
         admin = cur.fetchone()
         cur.close()
         db.close()
-        
+
         if admin and bcrypt.check_password_hash(admin["password"], pwd):
             login_user(User(admin["id"], "admin"))
             return redirect(url_for("admin_dashboard"))
@@ -502,14 +502,14 @@ def student_login():
         pwd = request.form["password"]
 
         db = connect()
-        cur = db.cursor()
+        cur = db.cursor(dictionary=True)
         cur.execute(
             "SELECT id, password FROM students WHERE email=%s AND is_active=1", (email,)
         )
         student = cur.fetchone()
         cur.close()
         db.close()
-        
+
         if student and bcrypt.check_password_hash(student["password"], pwd):
             login_user(User(student["id"], "student"))
             return redirect(url_for("student_dashboard"))
@@ -605,4 +605,4 @@ def logout():
 
 if __name__ == "__main__":
     setup()
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
